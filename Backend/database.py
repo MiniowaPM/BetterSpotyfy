@@ -2,7 +2,14 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 
-URL_DATABASE = 'mysql+pymysql://API_ADMIN:Admin123@localhost:3306/FastApi_test'
+DB_USER = "API_ADMIN"
+DB_PASSWORD = "password123"
+DB_NAME = "BetterSpotifyDB"
+
+URL_DATABASE = f"mysql+pymysql://{DB_USER}:{DB_PASSWORD}@localhost:3306/{DB_NAME}"
+
+# URL_DATABASE = 'mysql+pymysql://{DB_USER}:{DB_PASSWORD}@localhost:3306/BetterSpotifyDB'
+# URL_DATABASE = 'mysql+pymysql://USERNAME:PASSWORD@SERVER_IP:PORT/DB_NAME'
 
 engine = create_engine(URL_DATABASE)
 
