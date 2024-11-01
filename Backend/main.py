@@ -10,7 +10,7 @@ app = FastAPI()
 models.Base.metadata.create_all(bind=engine)
 
 
-# Base Models
+# Base Models / Schemas
 class AlbumBase(BaseModel):
     title: str
     description: str
@@ -26,7 +26,7 @@ class UserBase(BaseModel):
     firstname: str
     lastname: str
     email: str
-    # gender: enumerate
+    gender: str
     password: str
 
 

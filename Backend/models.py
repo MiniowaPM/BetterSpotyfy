@@ -1,9 +1,12 @@
-from sqlalchemy import Enum ,Boolean, Column, Integer, String
+from sqlalchemy import Boolean, Column, Integer, String, ForeignKey
+from sqlalchemy.orm import relationship 
 from database import Base
 
-class Gender(str, Enum):
-    male = "male"
-    female = "female"
+class Gender(Base):
+    __tablename__ = 'gender'
+
+    id = Column(Integer, primary_key=True, index=True)
+    gender = Column(String(50), unique=True)
 
 class Genre(Base):
     __tablename__ = 'genres'
@@ -19,7 +22,7 @@ class User(Base):
     first_name = Column(String(50), unique=False)
     last_name = Column(String(50), unique=False)
     email = Column(String(50), unique=True)
-    # gender = Column(Enum(Gender), unique=False)
+    gender = Column(Integer, ForeignKey("gender.id"))
     password_hash = Column(String(50), unique=True)
     wallet = Column(String(50), unique=False)
 

@@ -1,0 +1,23 @@
+# Ignore environment configuration files
+.env
+.env.local
+venv
+
+# Ignore Python bytecode files
+__pycache__/
+
+# Ignore IDE/editor specific files
+.vscode/
+.idea/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Ignore log files and databases
+*.log
+*.sql
+*.sqlite
+
+# Ignore installation guide file
+installation.txt

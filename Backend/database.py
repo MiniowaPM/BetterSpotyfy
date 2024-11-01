@@ -4,7 +4,7 @@ from sqlalchemy.ext.declarative import declarative_base
 
 DB_USER = "API_ADMIN"
 DB_PASSWORD = "password123"
-DB_NAME = "BetterSpotifyDB"
+DB_NAME = "TEST_API"
 
 URL_DATABASE = f"mysql+pymysql://{DB_USER}:{DB_PASSWORD}@localhost:3306/{DB_NAME}"
 
