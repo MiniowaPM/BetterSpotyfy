@@ -1,7 +1,8 @@
 # Ignore environment configuration files
-.env
-.env.local
-venv
+.env/
+.env.local/
+venv/
+.venv/
 
 # Ignore Python bytecode files
 __pycache__/

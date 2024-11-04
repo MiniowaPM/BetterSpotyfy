@@ -44,6 +44,15 @@ db_dependency = Annotated[Session, Depends(get_db)]
 @app.post("/api/user/", status_code=status.HTTP_201_CREATED, response_model=UserBase)
 async def create_user(user: UserBase, db: db_dependency):
     db_user = models.User(**user.model_dump())
+    check_username = db.query(models.User).filter(models.User.username == db_user.username).first()
+    check_gender = db.query(models.User).filter(models.User.gender == db_user.gender).first()
+    check_email = db.query(models.User).filter(models.User.email == db_user.email).first()
+    if check_username is not None:
+        raise HTTPException(status_code=409, detail="Username already exists")
+    if check_email is not None:
+        raise HTTPException(status_code=409, detail="Email already exists")
+    if check_gender is None:
+        raise HTTPException(status_code=409, detail="Invalid gender type")
     db.add(db_user)
     db.commit()
     db.refresh(db_user)
@@ -63,7 +72,13 @@ async def get_users(db: db_dependency):
 
 @app.post("/api/album/", status_code=status.HTTP_201_CREATED, response_model=AlbumBase)
 async def create_album(album: AlbumBase, db: db_dependency):
-    db_album = models.Album(**album.dict())
+    db_album = models.Album(**album.model_dump())
+    check_genre = db.query(models.Album).filter(models.Album.genre == db_album.genre).first()
+    check_title = db.query(models.Album).filter(models.Album.title == db_album.title).first()
+    if check_title is not None:
+        raise HTTPException(status_code=409, detail="Title already exists")
+    if check_genre is None:
+        raise HTTPException(status_code=409, detail="Invalid genre type")
     db.add(db_album)
     db.commit()
     db.refresh(db_album)
@@ -79,11 +94,19 @@ async def get_album(album_id: int, db: db_dependency):
 @app.get("/api/albums/", status_code=status.HTTP_200_OK, response_model=List[AlbumBase])
 async def get_albums(db: db_dependency):
     albums = db.query(models.Album).all()
+    if albums is None:
+        raise HTTPException(status_code=404, detail="Albums not found")
     return albums
 
 @app.post("/api/album/{album_id}/song", status_code=status.HTTP_201_CREATED, response_model=SongBase)
 async def create_song(album_id: int, song: SongBase, db: db_dependency):
-    db_song = models.Song(**song.dict(), album_fk=album_id)
+    db_song = models.Song(**song.model_dump(), album_fk=album_id)
+    check_album_id = db.query(models.Song).filter(models.Song.id == db_song.id).first()
+    check_title = db.query(models.Song).filter(models.Song.title == db_song.title).first()
+    if check_album_id is None:
+        raise HTTPException(status_code=404, detail="Album id not found")
+    if check_title is not None:
+        raise HTTPException(status_code=409, detail="Title already exists")
     db.add(db_song)
     db.commit()
     db.refresh(db_song)
@@ -99,4 +122,6 @@ async def get_song(song_id: int, db: db_dependency):
 @app.get("/api/songs/", status_code=status.HTTP_200_OK, response_model=List[SongBase])
 async def get_song(db: db_dependency):
     songs = db.query(models.Song).all()
+    if songs is None:
+        raise HTTPException(status_code=404, detail="Songs not found")
     return songs
