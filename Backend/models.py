@@ -1,13 +1,13 @@
-from sqlalchemy import Boolean, Column, Integer, String, ForeignKey, DateTime
+from sqlalchemy import Boolean, Column, Enum, Integer, String, ForeignKey, DateTime
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 from database import Base
+import enum
 
-class Gender(Base):
-    __tablename__ = 'gender'
-
-    id = Column(Integer, primary_key=True, index=True)
-    gender = Column(String(50), unique=True)
+class Gender(enum.Enum):
+    Male = 1
+    Female = 2
+    Other = 3
 
 class Genre(Base):
     __tablename__ = 'genres'
@@ -31,7 +31,7 @@ class User(Base):
     first_name = Column(String(50), unique=False)
     last_name = Column(String(50), unique=False)
     email = Column(String(100), unique=True)
-    gender = Column(Integer, ForeignKey('gender.id'))
+    gender = Column(Enum(Gender), nullable=False)
     password_hash = Column(String(128), unique=False)
     wallet = Column(String(50), unique=False, nullable=True)
     is_admin = Column(Boolean, unique=False, default=False)
@@ -52,3 +52,7 @@ class Song(Base):
     description = Column(String(500), unique=False)
     genre = Column(Integer, ForeignKey('genres.id'))
     album_fk = Column(Integer, ForeignKey('albums.id'))
+
+class Config:
+    orm_mode = True
+    use_enum_values = True

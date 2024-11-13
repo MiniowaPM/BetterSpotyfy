@@ -1,11 +1,11 @@
-1) Install python, pip
-2) Create a virtual environment 
+1. Install python, pip
+2. Create a virtual environment 
     python -m venv venv
-3) Activate the virtual environment
+3. Activate the virtual environment
     ./Backend/env/Script/activate
-4) Install packages
+4. Install packages
     pip install fastapi uvicorn sqlalchemy pymysql
-5) Start the app via uvicorn
+5. Start the app via uvicorn
     uvicorn main:app --reload
     python -m uvicorn main:app --relaod
-6) Install XAMPP, and establish connection via database.py
+6. Install XAMPP, and establish connection via database.py
