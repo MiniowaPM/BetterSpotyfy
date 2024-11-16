@@ -5,6 +5,7 @@
     ./Backend/env/Script/activate
 4. Install packages
     pip install fastapi uvicorn sqlalchemy pymysql
+    pip install "python-jose[cryptography]" "passlib[bcrypt]" python-multipart 
 5. Start the app via uvicorn
     uvicorn main:app --reload
     python -m uvicorn main:app --relaod

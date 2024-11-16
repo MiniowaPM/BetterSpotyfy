@@ -17,7 +17,7 @@ class Genre(Base):
 
 class Songs_owned(Base):
     __tablename__ = 'songs_owned'
-    
+      
     id = Column(Integer, primary_key=True, index=True)
     song_fk = Column(Integer, ForeignKey('songs.id'))
     user_fk = Column(Integer, ForeignKey('users.id'))
@@ -52,7 +52,3 @@ class Song(Base):
     description = Column(String(500), unique=False)
     genre = Column(Integer, ForeignKey('genres.id'))
     album_fk = Column(Integer, ForeignKey('albums.id'))
-
-class Config:
-    orm_mode = True
-    use_enum_values = True
