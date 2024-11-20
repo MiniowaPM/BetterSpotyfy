@@ -103,7 +103,7 @@ Base URL: http://localhost:8000
 | GET    | /user/all          | Get partial users info      | JWT Token + is_admin       |
 | GET    | /user/all          | Get users info              | JWT Token + is_admin       |
 
-#### Album Endpoints ####
+### Album Endpoints ###
 
 | Method | Endpoint              | Description                     | Auth Required              |
 |--------|-----------------------|---------------------------------|----------------------------|
@@ -114,7 +114,7 @@ Base URL: http://localhost:8000
 | DELETE | /albums/{album_id}   | Delete album                   | JWT Token + is_admin       |
 
 
-#### Song Endpoint ####
+### Song Endpoint ###
 
 | Method | Endpoint              | Description                     | Auth Required              |
 |--------|-----------------------|---------------------------------|----------------------------|
@@ -124,13 +124,18 @@ Base URL: http://localhost:8000
 | PATCH  | /songs/{song_id}     | Update song details            | JWT Token + is_admin       |
 | DELETE | /songs/{song_id}     | Delete song                    | JWT Token + is_admin       |
 
-#### Other Endpoints ####
+### Other Endpoints ###
 
 | Method | Endpoint              | Description                     | Auth Required              |
 |--------|-----------------------|---------------------------------|----------------------------|
-| GET    | /                     | Welcome page                   | JWT Token + is_admin       |
+| GET    | /                     | Welcome page                   | No                         |
 | GET    | /auth/token           | Login and get access token     | No                         |
 
+
+### Extra info: ###
+> JWT Token is aquired by logging to the database with /auth/token route
+
+> is_admin is condition whether the user accout has record ```is_admin == 1```  
 
 Detailed documentation and interactive API docs available at /docs (Swagger UI).
 
