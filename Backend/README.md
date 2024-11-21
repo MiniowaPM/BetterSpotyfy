@@ -21,7 +21,7 @@
 - JWT-based authentication and authorization.
 - Validation of request data using Pydantic.
 - OpenAPI documentation available at /docs.
-- Integration-ready with databases (MySQL).
+- Integration-ready with databases (MySQL, SQLite, PostgreSQL).
 
 ## Tech Stack ##
 
@@ -62,13 +62,17 @@ Follow these instructions to set up the project locally.
 
 4. Set up config file in the Backend/core/config.py directory and change setting class values:
 
-``` DB_USER = "database_user" ```
+```DATABASES = 1 ``` # 1: MySQL, 2: SQLite, 3: PostgreSQL
 
-``` DB_PASSWORD = "database_user_password" ```
+```DB_USER = "API_ADMIN" ```
 
-``` DB_NAME = "database_name" ```
+```DB_PASSWORD = "password123" ```
 
-``` SECRET_KEY = " your_secret_key" ```
+```DB_HOST = "localhost" ```
+
+```DB_PORT = "3306" ```
+
+```DB_NAME = "TEST_API" ```
 
 5. Run the MySQL database:
 

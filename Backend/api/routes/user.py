@@ -12,9 +12,11 @@ router = APIRouter(prefix="/user")
 
 @router.delete("/{user_id}", tags=["User"], status_code=status.HTTP_200_OK)
 async def delete_user(user_id: int, db: db_dependency, user_auth: user_dependency):
+    # Check for JWT token and user permissions (is_admin == 1)
     if user_auth is None or not user_auth.get('is_admin', False):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail='Authentication failed or insufficient premissions')
     db_user = db.query(models.User).filter(models.User.id == user_id).first()
+    # User does not exists in database
     if db_user is None:
         raise HTTPException(status_code=404, detail="User not found")
     db.delete(db_user)
@@ -23,15 +25,19 @@ async def delete_user(user_id: int, db: db_dependency, user_auth: user_dependenc
 
 @router.patch("/{user_id}", tags=["User"], status_code=status.HTTP_200_OK)
 async def update_user(user_id: str, user: UpdateUserBase, db: db_dependency, user_auth: user_dependency):
-    if user_id == "current":
+    # check the {user_id} variable for str == me or int
+    if user_id == "me":
         user_id = user_auth["id"]
     else:
         user_id = int(user_id)
+    # Check for JWT token stored user_id or user permissions (is_admin == 1)
     if user_id is not user_auth["id"] and not user_auth.get("is_admin", False):
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Access denied")
     db_user = db.query(models.User).filter(models.User.id == user_id).first()
+    # User does not exists in database
     if db_user is None: 
         raise HTTPException(status_code=404, detail="User not found")
+    # For each patched (inserted) element set an attribute of selected record
     for key, value in user.model_dump(exclude_unset=True).items():
         if key == "password_hash":
             value = bcrypt_context.hash(user.password_hash)
@@ -55,29 +61,36 @@ async def create_user(user: CreateUserBase, db: db_dependency):
     db.commit()
     return {"detail": "User successfully created"}
 
-@router.get("/{user_id}", tags=["User"], status_code=status.HTTP_200_OK, response_model=UpdateUserBase)
-async def get_user(user_id: str, db: db_dependency, user_auth: user_dependency):
-    if user_id == "current":
-        user_id = user_auth["id"]
-    else:
-        user_id = int(user_id)
-    if user_auth is None:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail='Authentication failed')
-    user = db.query(models.User).filter(models.User.id == user_id).first()
-    if user is None:
-        raise HTTPException(status_code=404, detail="User not found")
-    if not user_auth.get("is_admin", False) and user_id != user_auth["id"]:
-        user.password_hash = None
-        user.is_admin = False
-        user.wallet = None
-    return user
-
 @router.get("/all", tags=["User"], status_code=status.HTTP_200_OK, response_model=List[UpdateUserBase])
 async def get_users(db: db_dependency, user_auth: user_dependency):
     users = db.query(models.User).all()
+    # User does not exists in database
+    if users is None:
+        HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="There are no users in database")
+    # Clear extra info if user does not have admin permisions | TODO: zmiana z usuwania wartości do usunięcia argumentów ze słownika
     if not user_auth.get("is_admin", False):
         for user in users:
             user.password_hash = None
             user.is_admin = False
             user.wallet = None
     return users
+
+@router.get("/{user_id}", tags=["User"], status_code=status.HTTP_200_OK, response_model=UpdateUserBase)
+async def get_user(user_id: str, db: db_dependency, user_auth: user_dependency):
+    # check the {user_id} variable for str == me or int
+    if user_id == "me":
+        user_id = user_auth["id"]
+    else:
+        user_id = int(user_id)
+    # Check for JWT token whether user logged
+    if user_auth is None:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail='Authentication failed')
+    user = db.query(models.User).filter(models.User.id == user_id).first()
+    if user is None:
+        raise HTTPException(status_code=404, detail="User not found")
+    # Clear extra info if user does not have admin permisions | TODO: zmiana z usuwania wartości do usunięcia argumentów ze słownika
+    if not user_auth.get("is_admin", False) and user_id != user_auth["id"]:
+        user.password_hash = None
+        user.is_admin = False
+        user.wallet = None
+    return user
