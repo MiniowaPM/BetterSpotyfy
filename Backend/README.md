@@ -12,18 +12,18 @@
 - [API Endpoints](#api-endpoints)
 - [Contact](#contact)
 
-## About the Project ##
+## About the Project 📝 ##
 
 > This FastAPI-based REST API provides endpoints to handle save and secure connection to database, user authenticaton via JSON Web Token (JWT), database injection based on user permision via HTTP methods. It is optimized for performance, provides detailed API documentation, and follows best practices for API development.
 
-## Features ##
+## Features ✨ ##
 - CRUD operations for managing resources.
 - JWT-based authentication and authorization.
 - Validation of request data using Pydantic.
 - OpenAPI documentation available at /docs.
 - Integration-ready with databases (MySQL, SQLite, PostgreSQL).
 
-## Tech Stack ##
+## Tech Stack 🛠️ ##
 
 - Framework: FastAPI
 - Language: Python 3.8+
@@ -32,15 +32,15 @@
 - Encription: Bcrypt
 - Other Tools: Uvicorn, Pydantic
 
-## Getting Started ##
+## Getting Started 🚀 ##
 
 Follow these instructions to set up the project locally.
 
-### Prerequisites ###
+### Prerequisites 🔧 ###
 - Python 3.8 or higher
 - Pipenv
 
-### Installation ###
+### Installation ⚙️ ###
 
 1. Clone the repository:
 
@@ -62,7 +62,7 @@ Follow these instructions to set up the project locally.
 
 4. Set up config file in the Backend/core/config.py directory and change setting class values:
 
-```DATABASES = 1 ``` # 1: MySQL, 2: SQLite, 3: PostgreSQL
+```DATABASES = 1 ``` # 1: MySQL, 2: SQLite, 3: PostgreSQL,  4: ...
 
 ```DB_USER = "API_ADMIN" ```
 
@@ -90,14 +90,14 @@ Open database menagment system (eg. XAMPP):
 
 ```uvicorn app.main:app --reload```
 
-## API Endpoints ##
+## API Endpoints 🌐 ##
 
 Base URL: http://localhost:8000
 
-### User Endpoints ###
+### User Endpoints 📧 ###
 
-| Method | Endpoint            | Description                  | Auth Required              |
-|--------|---------------------|------------------------------|----------------------------|
+| Method | Endpoint           | Description                 | Auth Required              |
+|--------|--------------------|-----------------------------|----------------------------|
 | POST   | /user/             | Sign-up user                | No                         |
 | PATCH  | /user/{user_id}    | Update user                 | JWT Token + is_admin       |
 | PATCH  | /user/me           | Update logged user          | JWT Token                  |
@@ -106,22 +106,25 @@ Base URL: http://localhost:8000
 | GET    | /user/me           | Get all logged user info    | JWT Token                  |
 | GET    | /user/all          | Get partial users info      | JWT Token + is_admin       |
 | GET    | /user/all          | Get users info              | JWT Token + is_admin       |
+| POST   | /user/me/profile-image/ | Uploads user profile image | JWT Token              |
+| GET    | /user/{user_id}/profile-image/ | Get user profile image | JWT Token           |
 
 ### Album Endpoints ###
 
-| Method | Endpoint              | Description                     | Auth Required              |
-|--------|-----------------------|---------------------------------|----------------------------|
+| Method | Endpoint             | Description                    | Auth Required              |
+|--------|----------------------|--------------------------------|----------------------------|
 | POST   | /albums/             | Add a new album                | JWT Token + is_admin       |
 | GET    | /albums/             | Get all albums                 | No                         |
 | GET    | /albums/{album_id}   | Get album details by ID        | No                         |
 | PATCH  | /albums/{album_id}   | Update album details           | JWT Token + is_admin       |
 | DELETE | /albums/{album_id}   | Delete album                   | JWT Token + is_admin       |
-
+| POST   | /albums/{user_id}/album-image/ | Uploads album thumbnail image  | JWT Token        |
+| GET    | /albums/{user_id}/album-image/ | Get user album thumbnail image | JWT Token        |
 
 ### Song Endpoint ###
 
-| Method | Endpoint              | Description                     | Auth Required              |
-|--------|-----------------------|---------------------------------|----------------------------|
+| Method | Endpoint             | Description                    | Auth Required              |
+|--------|----------------------|--------------------------------|----------------------------|
 | POST   | /songs/              | Add a new song                 | JWT Token + is_admin       |
 | GET    | /songs/              | Get all songs                  | No                         |
 | GET    | /songs/{song_id}     | Get song details by ID         | No                         |
@@ -130,8 +133,8 @@ Base URL: http://localhost:8000
 
 ### Other Endpoints ###
 
-| Method | Endpoint              | Description                     | Auth Required              |
-|--------|-----------------------|---------------------------------|----------------------------|
+| Method | Endpoint              | Description                    | Auth Required              |
+|--------|-----------------------|--------------------------------|----------------------------|
 | GET    | /                     | Welcome page                   | No                         |
 | GET    | /auth/token           | Login and get access token     | No                         |
 
@@ -150,4 +153,3 @@ Name: Miniowa
 Email: 31001@s.pm.szczecin.pl
 
 GitHub: @MiniowaPM
-
