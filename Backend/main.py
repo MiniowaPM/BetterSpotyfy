@@ -11,7 +11,6 @@ app.include_router(album_router)
 app.include_router(song_router)
 app.include_router(auth_router)
 
-
 # Initialize and create the database tables
 Base.metadata.create_all(bind=engine)
 

@@ -1,5 +1,6 @@
-from fastapi import APIRouter, Depends, HTTPException, status
-from sqlalchemy.orm import Session
+from fastapi import APIRouter, Depends, HTTPException, status, UploadFile
+from fastapi.responses import FileResponse
+from pathlib import Path
 from typing import List
 from ... import models, schemas, db
 from ...api.dependencies.auth import user_dependency
@@ -94,3 +95,34 @@ async def get_user(user_id: str, db: db_dependency, user_auth: user_dependency):
         user.is_admin = False
         user.wallet = None
     return user
+
+@router.post("/me/profile-image/",  tags=["User"], status_code=status.HTTP_200_OK, response_model=SuccessResponse)
+async def upload_user_profile_image(user_auth: user_dependency, file: UploadFile):
+    base_dir = Path(__file__).resolve().parent.parent.parent
+    # Check for file extention
+    file_extension = Path(file.filename).suffix.lower()
+    if file_extension not in [".jpg", ".jpeg", ".png"]:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid file type. Only .jpg, .jpeg, .png are allowed.")
+    image_path = base_dir/"images"/"users"/ f"{user_auth["id"]}.jpg"
+    if user_auth is None:
+        HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail='Authentication failed')
+    try:
+        with open(image_path, "wb") as f:
+            f.write(await file.read())
+    except:
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="File failed to create")
+    return {"detail": "User profile image succesfuly created"}
+
+@router.get("/{user_id}/profile-image", tags=["User"], status_code=status.HTTP_200_OK)
+async def get_user_profile_image(user_id: str, user_auth: user_dependency):
+    if user_id == "me":
+        user_id = user_auth["id"]
+    else:
+        user_id = int(user_id)
+    if user_auth is None:
+        HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail='Authentication failed')
+    base_dir = Path(__file__).resolve().parent.parent.parent
+    image_path = base_dir/"images"/"users"/f"{user_id}.jpg"
+    if not image_path.is_file():
+        image_path = base_dir/"images"/"users"/"default.jpg"
+    return FileResponse(image_path)
