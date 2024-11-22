@@ -3,16 +3,16 @@
 > A backend REST API built with FastAPI for handling http requests to database. It is designed to be fast, efficient, and easy to integrate.
 
 ## Table of Contents ##
-- [About the Project](#about-the-project)
-- [Features](#features)
-- [Tech Stack](#tech-stack)
-- [Getting Started](#getting-started)
-  - [Prerequisites](#prerequisites)
-  - [Installation](#installation)
-- [API Endpoints](#api-endpoints)
-- [Contact](#contact)
+- [About the Project](#about-the-project-📝)
+- [Features](#features-✨)
+- [Tech Stack](#tech-stack-🛠️)
+- [Getting Started](#getting-started-🚀)
+  - [Prerequisites](#prerequisites-🔧)
+  - [Installation](#installation-⚙️)
+- [API Endpoints](#api-endpoints-🌐)
+- [Contact](#contact-📞)
 
-## About the Project 📝 ##
+## About the Project 📝
 
 > This FastAPI-based REST API provides endpoints to handle save and secure connection to database, user authenticaton via JSON Web Token (JWT), database injection based on user permision via HTTP methods. It is optimized for performance, provides detailed API documentation, and follows best practices for API development.
 
@@ -94,7 +94,7 @@ Open database menagment system (eg. XAMPP):
 
 Base URL: http://localhost:8000
 
-### User Endpoints 📧 ###
+### User Endpoints ###
 
 | Method | Endpoint           | Description                 | Auth Required              |
 |--------|--------------------|-----------------------------|----------------------------|
@@ -146,7 +146,7 @@ Base URL: http://localhost:8000
 
 Detailed documentation and interactive API docs available at /docs (Swagger UI).
 
-## Contact ##
+## Contact 📞 ##
 
 Name: Miniowa
 
