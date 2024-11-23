@@ -9,7 +9,7 @@ router = APIRouter(prefix="/song")
 
 @router.delete("/{song_id}", tags=["Song"], status_code=status.HTTP_200_OK)
 async def delete_song(song_id: int, db: db_dependency, user_auth: user_dependency):
-    # Check for JWT token stored user_id or user permissions (is_admin == 1)
+    # Logged JWT Token validation and user permisions
     if user_auth is None or not user_auth.get('is_admin', False):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail='Authentication failed or insufficient premissions')
     db_song = db.query(models.Song).filter(models.Song.id == song_id).first()
@@ -21,7 +21,7 @@ async def delete_song(song_id: int, db: db_dependency, user_auth: user_dependenc
 
 @router.patch("/{song_id}", tags=["Song"], status_code=status.HTTP_200_OK)
 async def update_user(song_id: int, song: UpdateSongBase, db: db_dependency, user_auth: user_dependency):
-    # Check for JWT token stored user_id or user permissions (is_admin == 1)
+    # Logged JWT Token validation and user permisions
     if user_auth is None or not user_auth.get("is_admin", False):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail='Authentication failed or insufficient premissions')
     db_song = db.query(models.Song).filter(models.Song.id == song_id).first()
@@ -35,7 +35,7 @@ async def update_user(song_id: int, song: UpdateSongBase, db: db_dependency, use
 
 @router.post("/api/album/{album_id}/song", tags=["Song"], status_code=status.HTTP_201_CREATED, response_model=SuccessResponse)
 async def create_song(album_id: int, song: SongBase, db: db_dependency, user_auth: user_dependency):
-    # Check for JWT token stored user_id or user permissions (is_admin == 1)
+    # Logged JWT Token validation and user permisions
     if user_auth is None or not user_auth.get('is_admin', False):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail='Authentication failed or insufficient premissions')
     db_song = models.Song(**song.model_dump(), album_fk=album_id)
